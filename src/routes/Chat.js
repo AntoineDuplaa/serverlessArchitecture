@@ -1,14 +1,11 @@
 import React, {useRef, useState} from 'react';
-import {useCollectionData} from "react-firebase-hooks/firestore";
-import {auth, functions} from "../firebase";
+import {auth, db, functions} from "../firebase";
 import {httpsCallable} from "firebase/functions";
+import {doc, setDoc} from "firebase/firestore";
 import firebase from 'firebase/compat/app';
 
-
-
-
 const ChatMessage = (props) => {
-    const { text, uid } = props.message;
+    const { text, uid, photoURL } = props.message;
 
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
@@ -26,10 +23,20 @@ const ChatMessage = (props) => {
 const ChatRoom = () => {
 
     console.log("herllo")
-    const messagesRef = firebase.collection('messages');
+    const messagesRef = firebase.firestore.collection('messages');
     const query = messagesRef.orderBy('createdAt').limit(25);
+    const [messages, setMessages] = useState()
 
-    const [messages] = useCollectionData(query, {idField: 'id'})
+    const getMessages = async() => {
+        await setDoc(doc(db, 'messages'))
+            .then(response => {
+                const message = response.docs.map(doc => ({
+                    data: doc.data(), id: doc.id,
+                }))
+                setMessages(message);
+            })
+            .catch(error => console.log(error.message))
+    }
 
     const [formValue, setFormValue] = useState();
 
