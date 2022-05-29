@@ -5,6 +5,7 @@ import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, create
 //import { getFirestore } from 'firebase/firestore/lite';
 import {getFirestore, collection, addDoc, doc, setDoc} from "firebase/firestore";
 import * as ROUTES from "./constants/routes";
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -24,6 +25,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore(app);
+const functions = getFunctions();
 
 //export default db;
 export default auth;
@@ -43,13 +45,25 @@ export function register(email, password, firstName, lastName) {
     createUserWithEmailAndPassword(auth, email, password)
         .then(async response => {
             try {
-                const docRef = doc(db, "Users", response.user.uid);
-                await setDoc(docRef, {
-                    uid: response.user.uid,
-                    email: email,
-                    firstName: firstName,
-                    lastName: lastName
-                })
+                const addUser = httpsCallable(functions, 'addUser');
+                addUser({
+                        uid: response.user.uid,
+                        email: email,
+                        firstName: firstName,
+                        lastName: lastName
+                    })
+                  .then((result) => {
+                      // Read result of the Cloud Function.
+                      /** @type {any} */
+                      console.log(result.data);
+                  });
+                // const docRef = doc(db, "Users", response.user.uid);
+                // await setDoc(docRef, {
+                //     uid: response.user.uid,
+                //     email: email,
+                //     firstName: firstName,
+                //     lastName: lastName
+                // })
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
