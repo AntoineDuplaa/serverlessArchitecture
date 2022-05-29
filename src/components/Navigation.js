@@ -17,7 +17,7 @@ const NavigationAuth = () => (
       <Link to={ROUTES.ACCOUNT}>Account</Link>
     </li>
     <li>
-      <button onClick={() => logout()}>se déconnecter</button>
+      <button onClick={() => logout()}>Logout</button>
     </li>
   </ul>
 );

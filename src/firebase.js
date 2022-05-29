@@ -57,19 +57,10 @@ export function register(email, password, firstName, lastName) {
                       /** @type {any} */
                       console.log(result.data);
                   });
-                // const docRef = doc(db, "Users", response.user.uid);
-                // await setDoc(docRef, {
-                //     uid: response.user.uid,
-                //     email: email,
-                //     firstName: firstName,
-                //     lastName: lastName
-                // })
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
-            //window.location = '/login';
-            // Sign in success
-            // Route to site here
+            window.location = ROUTES.HOME;
         }).catch(error => {
         console.error(error);
     });
