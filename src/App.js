@@ -3,11 +3,13 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import Home from "./routes/home";
 import LogIn from "./routes/LogIn";
 import Register from "./routes/Register";
+import Navigation from "./components/Navigation";
 
 function App() {
   return (
       <Router>
         <div>
+          <Navigation />
           <div className="auth-wrapper">
             <div>
               <Routes>

@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
 //import { getFirestore } from 'firebase/firestore/lite';
 import {getFirestore, collection, addDoc} from "firebase/firestore";
+import * as ROUTES from "./constants/routes";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -30,7 +31,7 @@ export default auth;
 export function login(email, password) {
     signInWithEmailAndPassword(auth, email, password)
         .then(user => {
-            window.location = '/home';
+            window.location = ROUTES.HOME;
             // Sign in success
             // Route to site here
         }).catch(error => {
@@ -43,6 +44,7 @@ export function register(email, password, firstName, lastName) {
         .then(response => {
             try {
                 const docUser = addDoc(collection(db, "Users"), {
+                    uid: response.user.uid,
                     email: email,
                     firstName: firstName,
                     lastName: lastName
@@ -60,6 +62,7 @@ export function register(email, password, firstName, lastName) {
 }
 
 export function logout() {
+    window.location = ROUTES.SIGN_IN;
     return signOut(auth);
 }
 
