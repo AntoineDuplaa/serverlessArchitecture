@@ -16,3 +16,7 @@ admin.initializeApp();
 exports.addUser = functions.https.onCall(async (data, context) => {
   return await admin.firestore().collection('Users').add(data);
 });
+
+exports.addMessage = functions.https.onCall(async (data, context) => {
+  return await admin.firestore().collection('Messages').add(data);
+});

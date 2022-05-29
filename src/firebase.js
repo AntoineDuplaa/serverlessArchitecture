@@ -24,14 +24,12 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore(app);
+export const auth = getAuth();
+export const db = getFirestore(app);
 export const storage = getStorage(app);
 
-const functions = getFunctions();
+export const functions = getFunctions();
 
-//export default db;
-export default auth;
 
 export function login(email, password) {
     signInWithEmailAndPassword(auth, email, password)
