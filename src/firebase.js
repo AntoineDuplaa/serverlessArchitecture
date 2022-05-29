@@ -70,14 +70,13 @@ export function register(email, password, firstName, lastName) {
 
 export function sendMessage(message, uid) {
     const addMessage = httpsCallable(functions, 'addMessage');
-
-    console.log(message, uid)
-
     addMessage({
-        message: message,
         uid: uid,
+        message: message,
     })
         .then((result) => {
+            // Read result of the Cloud Function.
+            /** @type {any} */
             console.log(result.data);
         });
 }
