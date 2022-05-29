@@ -1,7 +1,5 @@
 import React from 'react';
-import {auth, db, login, logout} from "../firebase";
-import {createUserWithEmailAndPassword} from "firebase/auth";
-import {addDoc, collection} from "firebase/firestore";
+import {auth, logout} from "../firebase";
 
 const Home = () => {
     console.log(auth);

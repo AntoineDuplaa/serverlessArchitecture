@@ -1,21 +1,21 @@
 import React, {useRef, useState} from 'react';
 import {useCollectionData} from "react-firebase-hooks/firestore";
 import {auth, functions} from "../firebase";
-import {getFunctions, httpsCallable} from "firebase/functions";
-import firebase from "firebase";
+import {httpsCallable} from "firebase/functions";
+import firebase from 'firebase/compat/app';
 
 
 
 
 const ChatMessage = (props) => {
-    const { text, uid, photoURL } = props.message;
+    const { text, uid } = props.message;
 
     const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
     return (
         <>
             <div className={'message ${messageClass}'}>
-                <img src={'https://api.adorable.io/avatars/23/abott@adorable.png%27%7D'} />
+                <img src={'https://api.adorable.io/avatars/23/abott@adorable.png%27%7D'}  alt={"test"}/>
                 <p>{text}</p>
             </div>
         </>
