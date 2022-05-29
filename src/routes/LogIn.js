@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import './../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './../style/App.css'
+import {login} from "../firebase";
 
 const LogIn = () => {
     const emailRef = useRef();
@@ -30,11 +31,11 @@ const LogIn = () => {
                 />
             </div>
             <div className="d-grid">
-                <button type="submit" className="btn btn-primary" onClick={console.log("test")}>
-                    Log In
+                <button type="submit" className="btn btn-primary" onClick={() => login(emailRef.current.value, passwordRef.current.value)}>
+                    Log in
                 </button>
             </div>
-            <p>I don't have any account, <a href={"/signIn"}>Sign In</a></p>
+            <p>I don't have any account, <a href={"/register"}>Register</a></p>
         </div>
     );
 };
