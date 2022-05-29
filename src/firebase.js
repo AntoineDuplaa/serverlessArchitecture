@@ -52,7 +52,7 @@ export function register(email, password, firstName, lastName) {
                         email: email,
                         firstName: firstName,
                         lastName: lastName
-                    })
+                })
                   .then((result) => {
                       // Read result of the Cloud Function.
                       /** @type {any} */
@@ -66,6 +66,22 @@ export function register(email, password, firstName, lastName) {
         console.error(error);
     });
 }
+
+
+export function sendMessage(message, uid) {
+    const addMessage = httpsCallable(functions, 'addMessage');
+
+    console.log(message, uid)
+
+    addMessage({
+        message: message,
+        uid: uid,
+    })
+        .then((result) => {
+            console.log(result.data);
+        });
+}
+
 
 export function logout() {
     window.location = ROUTES.SIGN_IN;

@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {auth, db, functions} from "../firebase";
+import {auth, db, functions, sendMessage} from "../firebase";
 import {httpsCallable} from "firebase/functions";
 import {doc, setDoc} from "firebase/firestore";
 import firebase from 'firebase/compat/app';
@@ -22,10 +22,8 @@ const ChatMessage = (props) => {
 
 const ChatRoom = () => {
 
-    console.log("herllo")
-    const messagesRef = firebase.firestore.collection('messages');
-    const query = messagesRef.orderBy('createdAt').limit(25);
     const [messages, setMessages] = useState()
+    const [formValue, setFormValue] = useState();
 
     const getMessages = async() => {
         await setDoc(doc(db, 'messages'))
@@ -37,48 +35,28 @@ const ChatRoom = () => {
             })
             .catch(error => console.log(error.message))
     }
-
-    const [formValue, setFormValue] = useState();
-
     const dummy = useRef()
 
-        const sendMessage = async(e) => {
-            e.preventDefault();
+    const sendTheMessage = () => {
+        const {uid, photoURL} = auth.currentUser;
+        //setFormValue('');
+        //dummy.current.scrollIntoView({behavior: 'smooth'});
+        sendMessage("azer", uid)
+    }
 
-            const {uid, photoURL} = auth.currentUser;
+    //setFormValue('');
+    //dummy.current.scrollIntoView({behavior: 'smooth'});
 
-            const addMessage = httpsCallable(functions, 'addMessage');
-            addMessage({
-                text: formValue,
-                createAt: firebase.firestore.FieldValue.serverTimestamp(),
-                uid,
-                photoURL
-            })
-                .then((result) => {
-                    // Read result of the Cloud Function.
-                    /** @type {any} */
-                    console.log(result.data);
-                    setFormValue('');
-                    dummy.current.scrollIntoView({behavior: 'smooth'});
-                });
-        }
 
     return (
-
         <div>
-            <div>
-                {messages && messages.map(msg => <ChatMessage key={msg.id}  message={msg}/>)}
-                <div ref={dummy}></div>
-            </div>
-            <div>
-                <form onSubmit={sendMessage}>
-                    <input value={formValue} onChange={(e) => setFormValue(e.target.value)}/>
-                    <button type={"submit"}>send</button>
+            {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+                <form onClick={()=>sendTheMessage()}>
+                    <input type="text" value={"allo"} onChange={(e) => setFormValue(e.target.value)}/>
+                    <button type={"button"}>send</button>
                 </form>
-            </div>
         </div>
-
-    );
+        );
 };
 
 
