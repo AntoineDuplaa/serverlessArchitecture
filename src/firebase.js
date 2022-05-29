@@ -3,7 +3,7 @@ import {initializeApp} from "firebase/app";
 import {useEffect, useState} from "react";
 import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
 //import { getFirestore } from 'firebase/firestore/lite';
-import {getFirestore, collection, addDoc} from "firebase/firestore";
+import {getFirestore, collection, addDoc, doc, setDoc} from "firebase/firestore";
 import * as ROUTES from "./constants/routes";
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -41,15 +41,15 @@ export function login(email, password) {
 
 export function register(email, password, firstName, lastName) {
     createUserWithEmailAndPassword(auth, email, password)
-        .then(response => {
+        .then(async response => {
             try {
-                const docUser = addDoc(collection(db, "Users"), {
+                const docRef = doc(db, "Users", response.user.uid);
+                await setDoc(docRef, {
                     uid: response.user.uid,
                     email: email,
                     firstName: firstName,
                     lastName: lastName
-                });
-                console.log("Document written with ID: ", docUser.id);
+                })
             } catch (e) {
                 console.error("Error adding document: ", e);
             }

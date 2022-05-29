@@ -4,7 +4,6 @@ import * as ROUTES from '../constants/routes';
 import {logout, useAuth} from "../firebase";
 
 const Navigation = () => {
-  console.log(useAuth());
   const auth = useAuth();
   return (<div>{auth && <NavigationAuth />}</div>);
 };
