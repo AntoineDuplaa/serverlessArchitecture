@@ -6,6 +6,7 @@ import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, create
 import {getFirestore, collection, addDoc, doc, setDoc} from "firebase/firestore";
 import * as ROUTES from "./constants/routes";
 import { getFunctions, httpsCallable } from "firebase/functions";
+import { getStorage } from "firebase/storage";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -25,6 +26,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore(app);
+export const storage = getStorage(app);
+
 const functions = getFunctions();
 
 //export default db;

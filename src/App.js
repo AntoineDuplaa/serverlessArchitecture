@@ -4,6 +4,7 @@ import Home from "./routes/home";
 import LogIn from "./routes/LogIn";
 import Register from "./routes/Register";
 import Navigation from "./components/Navigation";
+import Upload from "./routes/Upload";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
                   <Route exact path="/login" element={<LogIn />} />
                   <Route exact path="/register" element={<Register />} />
                   <Route path="/home" element={<Home />} />
+                  <Route path="/upload" element={<Upload />} />
               </Routes>
             </div>
           </div>
