@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import './Chat.css';
 import {auth, db, useAuth} from "../../firebase";
-import {Timestamp, collection, query, orderBy, onSnapshot, addDoc} from "firebase/firestore";
+import {Timestamp, collection, query, orderBy, onSnapshot, addDoc, doc, getDoc} from "firebase/firestore";
 
 
 function Chat() {
@@ -41,7 +41,7 @@ function ChatRoom() {
     await addDoc(collection(db, 'Messages'), {
       text: formValue,
       createdAt: Timestamp.now(),
-      uid,
+      user: doc(db,'Users', uid),
       photoURL
     })
     setFormValue('');
@@ -61,13 +61,22 @@ function ChatRoom() {
 
 
 function ChatMessage(props) {
-  const { text, uid } = props.message;
+  const {text, user} = props.message;
+  const [userData, setUserData] = useState({});
 
-  const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
+  useEffect( () => {
+    const getData = async () => {
+      const docSnap = await getDoc(user);
+      setUserData(docSnap.data());
+    }
+
+    getData();
+  },[])
+  const messageClass = user.id === auth.currentUser.uid ? 'sent' : 'received';
 
   return (<>
     <div className={`message ${messageClass}`}>
-      <p>{text}</p>
+      <p>{userData.firstName + " " + userData.lastName}:{" " + text}</p>
     </div>
   </>)
 }
