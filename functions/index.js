@@ -18,5 +18,5 @@ exports.addUser = functions.https.onCall(async (data, context) => {
 });
 
 exports.addMessage = functions.https.onCall(async (data, context) => {
-  return await admin.firestore().collection('Users').add(data);
+    return await admin.firestore().collection('Messages').add(data);
 });
