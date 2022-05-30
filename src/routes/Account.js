@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {updateEmail} from "firebase/auth";
 import {auth, db} from "../firebase";
+import * as ROUTES from "../constants/routes";
 
 
 export const Account = () => {
@@ -29,6 +30,7 @@ export const Account = () => {
             firstName: firstName,
             lastName: lastName
         })
+        window.location = ROUTES.HOME;
     }
 
     const handleChangeEmail = (event) => {
