@@ -9,10 +9,6 @@ const Home = () => {
                 <button type="submit" className="btn btn-primary" onClick={() => logout()}>
                     Log out
                 </button>
-
-                <a href='chat' >
-                    Chat
-                </a>
             </div>
         </div>
     );
