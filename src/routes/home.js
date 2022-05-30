@@ -1,9 +1,7 @@
 import React from 'react';
-import {auth, logout} from "../firebase";
+import {logout} from "../firebase";
 
 const Home = () => {
-    console.log(auth);
-
     return (
         <div>
             <p>hello</p>
