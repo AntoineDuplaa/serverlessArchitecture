@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
-import {doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
-import {updateEmail} from "firebase/auth";
+import {doc, getDoc, setDoc, updateDoc, deleteDoc} from "firebase/firestore";
+import {updateEmail, deleteUser} from "firebase/auth";
 import {auth, db} from "../firebase";
 import * as ROUTES from "../constants/routes";
+import {SIGN_IN} from "../constants/routes";
 
 
 export const Account = () => {
@@ -33,6 +34,13 @@ export const Account = () => {
         window.location = ROUTES.HOME;
     }
 
+    const handleDelete = async () => {
+      const userDocRef = doc(db, "Users", auth.currentUser.uid);
+      await deleteDoc(userDocRef);
+      await deleteUser(auth.currentUser);
+      window.location = ROUTES.SIGN_IN;
+    }
+
     const handleChangeEmail = (event) => {
         setEmail(event.target.value);
     }
@@ -58,6 +66,7 @@ export const Account = () => {
         <label style={{marginTop: "10px"}}>Last name</label>
         <input onChange={handleChangeLastName}/>
         <button style={{marginTop: "10px"}} onClick={handleUpdate}>Edit</button>
+        <button style={{marginTop: "10px"}} onClick={handleDelete}>Delete</button>
       {/*<button onClick={() => deleteAccount}>Supprimer son compte</button>*/}
     </div>
   )
