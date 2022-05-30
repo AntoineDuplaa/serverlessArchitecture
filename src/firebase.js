@@ -2,7 +2,7 @@
 import {initializeApp} from "firebase/app";
 import {useEffect, useState} from "react";
 import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
-import {getFirestore, setDoc, updateDoc, arrayUnion, doc} from "firebase/firestore";
+import {getFirestore, setDoc, updateDoc, arrayUnion, doc, collection} from "firebase/firestore";
 import * as ROUTES from "./constants/routes";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { getStorage } from "firebase/storage";
@@ -65,17 +65,15 @@ export function register(email, password, firstName, lastName) {
 }
 
 
-export function sendMessage(message, uid) {
-    const addMessage = httpsCallable(functions, 'addMessage');
-    addMessage({
-        uid: uid,
+export async function sendMessage(message, uid) {
+
+    const userDocRef = doc(db, "Users", uid)
+    const messageDocRef = doc(collection(db, "Messages"));
+    console.log(message)
+    await setDoc(messageDocRef,  {
+        userRef: userDocRef,
         message: message,
-    })
-        .then((result) => {
-            // Read result of the Cloud Function.
-            /** @type {any} */
-            console.log(result.data);
-        });
+    });
 }
 
 

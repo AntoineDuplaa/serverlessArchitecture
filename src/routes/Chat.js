@@ -3,6 +3,8 @@ import {auth, db, functions, sendMessage} from "../firebase";
 import {httpsCallable} from "firebase/functions";
 import {doc, setDoc} from "firebase/firestore";
 import firebase from 'firebase/compat/app';
+import {v4 as uuidv4} from 'uuid';
+
 
 const ChatMessage = (props) => {
     const { text, uid, photoURL } = props.message;
@@ -41,7 +43,8 @@ const ChatRoom = () => {
         const {uid, photoURL} = auth.currentUser;
         //setFormValue('');
         //dummy.current.scrollIntoView({behavior: 'smooth'});
-        sendMessage("azer", uid)
+        const myuuid = uuidv4()
+        sendMessage(formValue, uid)
     }
 
     //setFormValue('');
@@ -52,7 +55,7 @@ const ChatRoom = () => {
         <div>
             {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
                 <form onClick={()=>sendTheMessage()}>
-                    <input type="text" value={"allo"} onChange={(e) => setFormValue(e.target.value)}/>
+                    <input type="text" value={formValue} onChange={(e) => {console.log(e.target.value); setFormValue(e.target.value)}}/>
                     <button type={"button"}>send</button>
                 </form>
         </div>
