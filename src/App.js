@@ -4,8 +4,11 @@ import Home from "./routes/home";
 import LogIn from "./routes/LogIn";
 import Register from "./routes/Register";
 import Navigation from "./components/Navigation";
-import Chat from "./routes/Chat";
 import Upload from "./routes/Upload";
+import TaskManager from "./components/task/TaskManager";
+import Chat from "./components/chat/Chat";
+import {Account} from "./routes/Account";
+import {Admin} from "./routes/Admin";
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
                   <Route path="/home" element={<Home />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/upload" element={<Upload />} />
+                  <Route path="/account" element={<Account />} />
+                  <Route path="/admin" element={<Admin />} />
+                  <Route path="/task" element={<TaskManager />} />
               </Routes>
             </div>
           </div>
