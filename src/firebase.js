@@ -2,7 +2,7 @@
 import {initializeApp} from "firebase/app";
 import {useEffect, useState} from "react";
 import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
-import {getFirestore, setDoc, updateDoc, arrayUnion, doc, collection} from "firebase/firestore";
+import {getFirestore, setDoc, updateDoc, arrayUnion, doc, collection, addDoc} from "firebase/firestore";
 import * as ROUTES from "./constants/routes";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { getStorage } from "firebase/storage";

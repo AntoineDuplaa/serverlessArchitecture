@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { storage } from "../firebase"
+import {db, storage} from "../firebase"
+import {scryRenderedDOMComponentsWithTag} from "react-dom/test-utils";
+import {getFirestore, setDoc, updateDoc, arrayUnion, doc, collection, addDoc, getDocs, query, where } from "firebase/firestore";
+
 
 function App() {
     // State to store uploaded file
+    const [images, setImages] = useState([])
+    const [url, setUrl] = useState("")
     const [file, setFile] = useState("");
 
     // progress
@@ -14,13 +19,13 @@ function App() {
         setFile(event.target.files[0]);
     }
 
-    const handleUpload = () => {
+    const handleUpload = async () => {
         if (!file) {
             alert("Please upload an image first!");
         }
 
         const storageRef = ref(storage, `/files/${file.name}`);
-
+        const path = "files/" + file.name
         // progress can be paused and resumed. It also exposes progress updates.
         // Receives the storage reference and the file to upload.
         const uploadTask = uploadBytesResumable(storageRef, file);
@@ -38,18 +43,39 @@ function App() {
             (err) => console.log(err),
             () => {
                 // download url
-                getDownloadURL(uploadTask.snapshot.ref).then((url) => {
-                    console.log(url);
+                getDownloadURL(uploadTask.snapshot.ref).then((tmpUrl) => {
+                    setUrl(tmpUrl)
                 });
-            }
+            },
         );
+        console.log(url)
+        const docRef = await addDoc(collection(db, "Files"), {
+            path: path,
+            url : url,
+        });
+        console.log("Document written with ID: ", docRef.id);
     };
+
+    async function retrievePhotos() {
+        getDocs(collection(db, 'Files'))
+            .then(response => {
+                const images = response.docs.map(doc => ({
+                    data: doc.data(), id: doc.id,
+                }))
+                setImages(images);
+                console.log(images)
+
+            })
+            .catch(error => console.log(error.message))
+    }
 
     return (
         <div>
             <input type="file" onChange={handleChange} accept="/image/*" />
             <button onClick={handleUpload}>Upload to Firebase</button>
+            <button onClick={retrievePhotos}>Display pictures</button>
             <p>{percent} "% done"</p>
+            {images.map(image =>  <img src={image.data.url} height="125px" width="200px"/>)}
         </div>
     );
 }
