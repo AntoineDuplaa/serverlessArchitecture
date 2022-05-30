@@ -55,6 +55,7 @@ export function register(email, password, firstName, lastName) {
               const groupUsersRef = doc(db, "Groups", "Users");
               console.log(userDocRef.id);
               await updateDoc(groupUsersRef, {users: arrayUnion(doc(db,'Users', userDocRef.id))})
+              await updateDoc(userDocRef, {groups: arrayUnion(doc(db,'Groups', groupUsersRef.id))})
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
