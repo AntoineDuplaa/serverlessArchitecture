@@ -2,8 +2,7 @@
 import {initializeApp} from "firebase/app";
 import {useEffect, useState} from "react";
 import {getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword} from "firebase/auth";
-//import { getFirestore } from 'firebase/firestore/lite';
-import {getFirestore, collection, addDoc, doc, setDoc} from "firebase/firestore";
+import {getFirestore, setDoc, updateDoc, arrayUnion, doc} from "firebase/firestore";
 import * as ROUTES from "./constants/routes";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { getStorage } from "firebase/storage";
@@ -46,18 +45,16 @@ export function register(email, password, firstName, lastName) {
     createUserWithEmailAndPassword(auth, email, password)
         .then(async response => {
             try {
-                const addUser = httpsCallable(functions, 'addUser');
-                addUser({
-                        uid: response.user.uid,
-                        email: email,
-                        firstName: firstName,
-                        lastName: lastName
-                })
-                  .then((result) => {
-                      // Read result of the Cloud Function.
-                      /** @type {any} */
-                      console.log(result.data);
-                  });
+              const userDocRef = doc(db, "Users", response.user.uid);
+              await setDoc(userDocRef, {
+                uid: response.user.uid,
+                email: email,
+                firstName: firstName,
+                lastName: lastName
+              });
+              const groupUsersRef = doc(db, "Groups", "Users");
+              console.log(userDocRef.id);
+              await updateDoc(groupUsersRef, {users: arrayUnion(doc(db,'Users', userDocRef.id))})
             } catch (e) {
                 console.error("Error adding document: ", e);
             }
