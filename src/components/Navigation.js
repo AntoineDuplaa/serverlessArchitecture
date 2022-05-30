@@ -27,6 +27,9 @@ const NavigationAuth = () => (
       <Link to={ROUTES.TASK}>Task</Link>
     </li>
     <li>
+      <Link to={ROUTES.ADMIN}>Admin</Link>
+    </li>
+    <li>
       <button onClick={() => logout()}>Logout</button>
     </li>
   </ul>

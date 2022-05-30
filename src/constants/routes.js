@@ -4,5 +4,5 @@ export const HOME = '/home';
 export const ACCOUNT = '/account';
 export const CHAT = '/chat';
 export const UPLOAD = '/upload';
-export const ADMIN = '/admin';
 export const TASK = '/task';
+export const ADMIN = '/admin';
