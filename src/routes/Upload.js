@@ -41,19 +41,19 @@ function App() {
                 setPercent(percent);
             },
             (err) => console.log(err),
-            () => {
-                // download url
-                getDownloadURL(uploadTask.snapshot.ref).then((tmpUrl) => {
-                    setUrl(tmpUrl)
+            async () => {
+              // download url
+              getDownloadURL(storageRef).then(async (tmpUrl) => {
+                setUrl(tmpUrl)
+                console.log(tmpUrl);
+                const docRef = await addDoc(collection(db, "Files"), {
+                  path: path,
+                  url: tmpUrl,
                 });
+                console.log("Document written with ID: ", docRef.id);
+              });
             },
         );
-        console.log(url)
-        const docRef = await addDoc(collection(db, "Files"), {
-            path: path,
-            url : url,
-        });
-        console.log("Document written with ID: ", docRef.id);
     };
 
     async function retrievePhotos() {

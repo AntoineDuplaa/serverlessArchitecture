@@ -1,6 +1,8 @@
 import {useEffect, useState} from "react";
 import {collection, deleteDoc, doc, onSnapshot} from "firebase/firestore";
-import {db} from "../firebase";
+import {auth, db, logout} from "../firebase";
+import {deleteUser} from "firebase/auth";
+
 
 
 export const Admin = () => {
@@ -18,12 +20,15 @@ export const Admin = () => {
 
   const deleteAccount = async (id) => {
     await deleteDoc(doc(db, "Users", id));
+    if (id === auth.currentUser.uid) {
+      await logout()
+    }
   }
 
   return (
     <div>
       {users.map(user =>
-        <div>
+        <div key={user.id}>
           {user.id + " " + user.data.firstName + " " + user.data.lastName}
           <button onClick={() => deleteAccount(user.id)}>Delete Account</button>
         </div>
