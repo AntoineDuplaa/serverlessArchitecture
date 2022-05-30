@@ -29,16 +29,16 @@
   background-color: rgb(40, 37, 53);
 }
 
-form {
-  height: 10vh;
-  position: fixed;
-  bottom: 0;
-  background-color: rgb(24, 23, 23);
-  width: 100%;
-  max-width: 728px;
-  display: flex;
-  font-size: 1.5rem;
-}
+/*form {*/
+/*  height: 10vh;*/
+/*  position: fixed;*/
+/*  bottom: 0;*/
+/*  background-color: rgb(24, 23, 23);*/
+/*  width: 100%;*/
+/*  max-width: 728px;*/
+/*  display: flex;*/
+/*  font-size: 1.5rem;*/
+/*}*/
 
 form button {
   width: 20%;
