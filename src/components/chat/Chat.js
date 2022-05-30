@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useState} from 'react';
 import './Chat.css';
 import {auth, db, useAuth} from "../../firebase";
 import {Timestamp, collection, query, orderBy, onSnapshot, addDoc} from "firebase/firestore";
@@ -21,8 +21,8 @@ function ChatRoom() {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    const taskColRef = query(collection(db, 'Messages'), orderBy('created', 'desc'))
-    onSnapshot(taskColRef, (snapshot) => {
+    const chatColRef = query(collection(db, 'Messages'), orderBy('createdAt', 'asc'))
+    onSnapshot(chatColRef, (snapshot) => {
       setMessages(snapshot.docs.map(doc => ({
         id: doc.id,
         data: doc.data()
@@ -48,7 +48,7 @@ function ChatRoom() {
   }
 
   return (<>
-    {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg.data.text} />)}
+    {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg.data} />)}
     <form onSubmit={sendMessage}>
 
       <input value={formValue} onChange={(e) => setFormValue(e.target.value)} placeholder="say something nice" />
@@ -61,13 +61,12 @@ function ChatRoom() {
 
 
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid } = props.message;
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received';
 
   return (<>
     <div className={`message ${messageClass}`}>
-      <img src={photoURL || 'https://api.adorable.io/avatars/23/abott@adorable.png'}  alt={''}/>
       <p>{text}</p>
     </div>
   </>)
