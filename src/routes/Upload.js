@@ -75,7 +75,7 @@ function App() {
             <button onClick={handleUpload}>Upload to Firebase</button>
             <button onClick={retrievePhotos}>Display pictures</button>
             <p>{percent} "% done"</p>
-            {images.map(image =>  <img src={image.data.url} height="125px" width="200px"/>)}
+            {images.map(image =>  <img src={image.data.url} height="300px" width="300px"/>)}
         </div>
     );
 }
