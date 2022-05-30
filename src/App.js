@@ -8,6 +8,7 @@ import Upload from "./routes/Upload";
 import TaskManager from "./components/task/TaskManager";
 import Chat from "./components/chat/Chat";
 import {Account} from "./routes/Account";
+import {Admin} from "./routes/Admin";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/upload" element={<Upload />} />
                   <Route path="/account" element={<Account />} />
+                  <Route path="/admin" element={<Admin />} />
                   <Route path="/task" element={<TaskManager />} />
               </Routes>
             </div>
